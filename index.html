@@ -2,19 +2,7 @@
 <html lang="en">
 <head>
  <link rel="icon" type="image/x-icon" href="MugShot-PFP.png">
- <audio loop id="bg-music">
-  <source src="I deserve this.mp3" type="audio/mpeg">
-</audio>
-<script>
-  // Plays audio on the first user click
-  document.addEventListener('click', function() {
-    var audio = document.getElementById('bg-music');
-    audio.play();
-  }, { once: true }); // 'once' ensures it only triggers on the first click
-</script>
- <audio autoplay loop id="bg-audio">
-  <source src="I deserve this.mp3" type="audio/mpeg">
- </audio>
+ <audio src="I deserve this.mp3" loop controls></audio>
  <link rel="stylesheet" href="style.css">
 <video autoplay muted loop id="bg-video">
  <source src="Word Video No Sound.mp4" type="video/mp4">
