@@ -63,7 +63,7 @@ body {
 <!-- The Overlay Screen with Explicit Warning -->
 <div id="overlay" class="music-overlay">
   <div class="warning-text">⚠️ Audio Warning</div>
-  <div class="sub-text">This website plays background music out loud.</div>
+  <div class="sub-text">This website plays explicit music with bad words out!</div>
   <button class="enter-btn" onclick="startWebsite()">Unmute & Enter</button>
 </div>
 
