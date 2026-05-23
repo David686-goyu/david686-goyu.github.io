@@ -3,17 +3,50 @@
 <head>
  <link rel="icon" type="image/x-icon" href="MugShot-PFP.png">
  <style>
-  /* Centers the content on the entire screen */
+  /* Centers everything on the screen */
   .center-container {
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh; /* Takes up full screen height */
+    min-height: 100vh;
+    background-color: #111; /* Dark background */
+    font-family: sans-serif;
+  }
+
+  /* Style for the big enter button */
+  .enter-btn {
+    padding: 20px 40px;
+    font-size: 24px;
+    cursor: pointer;
+    background-color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
   }
 </style>
+
 <div class="center-container">
-  <audio src="your-audio-file.mp3" loop controls></audio>
+  <!-- Hidden Audio Element -->
+  <audio id="bg-music" src="I deserve this.mp3" loop></audio>
+
+  <!-- Big Central Button -->
+  <button id="start-btn" class="enter-btn" onclick="startWebsite()">Enter Website & Play Music</button>
 </div>
+
+<script>
+  function startWebsite() {
+    var audio = document.getElementById("bg-music");
+    var button = document.getElementById("start-btn");
+    
+    // Plays the music with full sound
+    audio.play(); 
+    
+    // Changes the button text to show it is working
+    button.innerHTML = "Welcome!";
+    button.style.opacity = "0.5";
+    button.disabled = true;
+  }
+</script>
  <link rel="stylesheet" href="style.css">
 <video autoplay muted loop id="bg-video">
  <source src="Word Video No Sound.mp4" type="video/mp4">
