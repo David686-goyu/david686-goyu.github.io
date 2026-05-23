@@ -3,50 +3,58 @@
 <head>
  <link rel="icon" type="image/x-icon" href="MugShot-PFP.png">
  <style>
-  /* Centers everything on the screen */
-  .center-container {
+  /* Fixed full-screen container that sits on top of everything */
+  .music-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.85); /* Semi-transparent dark background */
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
-    background-color: #111; /* Dark background */
-    font-family: sans-serif;
+    z-index: 9999; /* Ensures it stays above your profile info */
+    transition: opacity 0.5s ease;
   }
 
-  /* Style for the big enter button */
   .enter-btn {
-    padding: 20px 40px;
-    font-size: 24px;
+    padding: 15px 30px;
+    font-size: 18px;
     cursor: pointer;
     background-color: #fff;
+    color: #000;
     border: none;
     border-radius: 5px;
     font-weight: bold;
+    box-shadow: 0px 4px 15px rgba(0,0,0,0.3);
   }
 </style>
 
-<div class="center-container">
-  <!-- Hidden Audio Element -->
-  <audio id="bg-music" src="I deserve this.mp3" loop></audio>
+<!-- Hidden Audio Element -->
+<audio id="bg-music" src="I deserve this.mp3" loop></audio>
 
-  <!-- Big Central Button -->
-  <button id="start-btn" class="enter-btn" onclick="startWebsite()">Enter Website & Play Music</button>
+<!-- The Overlay Screen -->
+<div id="overlay" class="music-overlay">
+  <button class="enter-btn" onclick="startWebsite()">Enter Website & Play Music</button>
 </div>
 
 <script>
   function startWebsite() {
     var audio = document.getElementById("bg-music");
-    var button = document.getElementById("start-btn");
+    var overlay = document.getElementById("overlay");
     
-    // Plays the music with full sound
+    // Play the music out loud
     audio.play(); 
     
-    // Changes the button text to show it is working
-    button.innerHTML = "Welcome!";
-    button.style.opacity = "0.5";
-    button.disabled = true;
+    // Completely hide and remove the overlay block
+    overlay.style.opacity = "0";
+    setTimeout(function() {
+      overlay.style.display = "none";
+    }, 500); 
   }
 </script>
+
  <link rel="stylesheet" href="style.css">
 <video autoplay muted loop id="bg-video">
  <source src="Word Video No Sound.mp4" type="video/mp4">
