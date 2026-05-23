@@ -1,39 +1,70 @@
 body {
-  <style>
-  /* Fixed full-screen container that sits on top of everything */
+<style>
+  /* Full-screen dark overlay */
   .music-overlay {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100vh;
-    background-color: rgba(0, 0, 0, 0.85); /* Semi-transparent dark background */
+    background-color: #0b0b0b; /* Solid dark background */
     display: flex;
+    flex-direction: column; /* Stacks text above button */
     justify-content: center;
     align-items: center;
-    z-index: 9999; /* Ensures it stays above your profile info */
+    z-index: 9999; 
     transition: opacity 0.5s ease;
+    font-family: Arial, sans-serif;
+    color: #fff;
+    padding: 20px;
+    box-sizing: border-box;
   }
 
+  /* Warning text styling */
+  .warning-text {
+    font-size: 22px;
+    font-weight: bold;
+    color: #ff3333; /* Crimson red warning color */
+    margin-bottom: 5px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .sub-text {
+    font-size: 15px;
+    color: #bbb;
+    margin-bottom: 25px;
+    text-align: center;
+  }
+
+  /* Action button styling */
   .enter-btn {
-    padding: 15px 30px;
-    font-size: 18px;
+    padding: 15px 40px;
+    font-size: 16px;
     cursor: pointer;
     background-color: #fff;
     color: #000;
     border: none;
-    border-radius: 5px;
+    border-radius: 25px; /* Rounded pill style */
     font-weight: bold;
-    box-shadow: 0px 4px 15px rgba(0,0,0,0.3);
+    box-shadow: 0px 4px 20px rgba(255,255,255,0.1);
+    transition: transform 0.2s ease;
+  }
+
+  /* Gentle click animation */
+  .enter-btn:active {
+    transform: scale(0.95);
   }
 </style>
 
 <!-- Hidden Audio Element -->
 <audio id="bg-music" src="I deserve this.mp3" loop></audio>
 
-<!-- The Overlay Screen -->
+<!-- The Overlay Screen with Explicit Warning -->
 <div id="overlay" class="music-overlay">
-  <button class="enter-btn" onclick="startWebsite()">Enter Website & Play Music</button>
+  <div class="warning-text">⚠️ Audio Warning</div>
+  <div class="sub-text">This website plays background music out loud.</div>
+  <button class="enter-btn" onclick="startWebsite()">Unmute & Enter</button>
 </div>
 
 <script>
@@ -41,10 +72,10 @@ body {
     var audio = document.getElementById("bg-music");
     var overlay = document.getElementById("overlay");
     
-    // Play the music out loud
+    // Play audio out loud
     audio.play(); 
     
-    // Completely hide and remove the overlay block
+    // Smoothly fade out and remove overlay
     overlay.style.opacity = "0";
     setTimeout(function() {
       overlay.style.display = "none";
