@@ -152,14 +152,21 @@
     </button>
   </div>
 </div>
-
 <script>
   var audio = document.getElementById("bg-music");
 
   function startWebsite() {
     var overlay = document.getElementById("overlay");
+    var statusText = document.getElementById("status-text");
+    
+    // Play audio out loud
     audio.play(); 
     
+    // FIX: Explicitly turn the playing status text green on enter
+    statusText.innerHTML = "Playing";
+    statusText.style.color = "#1db954"; 
+    
+    // Smoothly fade out overlay
     overlay.style.opacity = "0";
     setTimeout(function() {
       overlay.style.display = "none";
@@ -176,13 +183,13 @@
       playIcon.innerHTML = "⏸";
       playText.innerHTML = "Pause";
       statusText.innerHTML = "Playing";
-      statusText.style.color = "#1db954"; /* Spotify Green when playing */
+      statusText.style.color = "#1db954"; /* Spotify Green */
     } else {
       audio.pause();
       playIcon.innerHTML = "▶";
       playText.innerHTML = "Play";
       statusText.innerHTML = "Paused";
-      statusText.style.color = "#b3b3b3";
+      statusText.style.color = "#b3b3b3"; /* Gray */
     }
   }
 
