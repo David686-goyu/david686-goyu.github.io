@@ -1,286 +1,369 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
- <link rel="icon" type="image/x-icon" href="MugShot-PFP.png">
- <style>
-  /* --- WARNING OVERLAY STYLES --- */
-  .music-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100vh;
-    background-color: #0b0b0b;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999; 
-    transition: opacity 0.5s ease;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    color: #fff;
-    padding: 20px;
-    box-sizing: border-box;
-  }
-  .warning-text {
-    font-size: 22px;
-    font-weight: bold;
-    color: #ff3333;
-    margin-bottom: 5px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-  }
-  .sub-text {
-    font-size: 15px;
-    color: #bbb;
-    margin-bottom: 25px;
-  }
-  .enter-btn {
-    padding: 15px 40px;
-    font-size: 16px;
-    cursor: pointer;
-    background-color: #fff;
-    color: #000;
-    border: none;
-    border-radius: 25px;
-    font-weight: bold;
-    box-shadow: 0px 4px 15px rgba(255,255,255,0.1);
-  }
-
-  /* --- MINI AUDIO PLAYER BOARD --- */
-  .custom-player {
-    position: fixed;
-    bottom: 20px; 
-    right: 20px;
-    background-color: #181818;
-    border: 1px solid #282828;
-    border-radius: 12px;
-    padding: 12px 18px;
-    width: 260px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    box-shadow: 0px 8px 24px rgba(0,0,0,0.5);
-    z-index: 9998; 
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    color: #fff;
-  }
-  
-  /* Song Info Display */
-  .player-info {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-  }
-  .track-title {
-    font-size: 14px;
-    font-weight: 600;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  .track-status {
-    font-size: 11px;
-    color: #b3b3b3;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-  }
-
-  /* Control Row Layout */
-  .player-controls {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 4px;
-  }
-  .action-btn {
-    background: #fff;
-    color: #000;
-    border: none;
-    padding: 8px 16px;
-    font-size: 13px;
-    font-weight: bold;
-    border-radius: 20px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    transition: background 0.2s;
-  }
-  .action-btn:hover {
-    background: #e6e6e6;
-  }
-  .mute-icon-btn {
-    background: transparent;
-    border: none;
-    color: #b3b3b3;
-    font-size: 18px;
-    cursor: pointer;
-    padding: 4px;
-    transition: color 0.2s;
-  }
-  .mute-icon-btn:hover {
-    color: #fff;
-  }
-</style>
-
-<!-- Hidden Audio Element -->
-<audio id="bg-music" src="I deserve this.mp3" loop></audio>
-
-<!-- The Warning Overlay Screen -->
-<div id="overlay" class="music-overlay">
-  <div class="warning-text">⚠️ Audio Warning</div>
-  <div class="sub-text">This website plays explicit music with bad words out!</div>
-  <button class="enter-btn" onclick="startWebsite()">Unmute & Enter</button>
-</div>
-
-<!-- Complete Custom Audio Player -->
-<div class="custom-player">
-  <div class="player-info">
-    <div id="status-text" class="track-status">Playing</div>
-    <div class="track-title">I deserve this</div>
-  </div>
-  
-  <div class="player-controls">
-    <!-- Play/Pause Button Toggle -->
-    <button id="master-play-btn" class="action-btn" onclick="togglePlay()">
-      <span id="play-icon">⏸</span> <span id="play-text">Pause</span>
-    </button>
-    <!-- Mute Button Toggle -->
-    <button id="master-mute-btn" class="mute-icon-btn" onclick="toggleMute()" title="Mute/Unmute">
-      🔊
-    </button>
-  </div>
-</div>
-<script>
-  var audio = document.getElementById("bg-music");
-
-  function startWebsite() {
-    var overlay = document.getElementById("overlay");
-    var statusText = document.getElementById("status-text");
-    
-    // Play audio out loud
-    audio.play(); 
-    
-    // FIX: Explicitly turn the playing status text green on enter
-    statusText.innerHTML = "Playing";
-    statusText.style.color = "#1db954"; 
-    
-    // Smoothly fade out overlay
-    overlay.style.opacity = "0";
-    setTimeout(function() {
-      overlay.style.display = "none";
-    }, 500); 
-  }
-
-  function togglePlay() {
-    var playIcon = document.getElementById("play-icon");
-    var playText = document.getElementById("play-text");
-    var statusText = document.getElementById("status-text");
-
-    if (audio.paused) {
-      audio.play();
-      playIcon.innerHTML = "⏸";
-      playText.innerHTML = "Pause";
-      statusText.innerHTML = "Playing";
-      statusText.style.color = "#1db954"; /* Spotify Green */
-    } else {
-      audio.pause();
-      playIcon.innerHTML = "▶";
-      playText.innerHTML = "Play";
-      statusText.innerHTML = "Paused";
-      statusText.style.color = "#b3b3b3"; /* Gray */
-    }
-  }
-
-  function toggleMute() {
-    var muteBtn = document.getElementById("master-mute-btn");
-
-    if (audio.muted) {
-      audio.muted = false;
-      muteBtn.innerHTML = "🔊";
-    } else {
-      audio.muted = true;
-      muteBtn.innerHTML = "🔇";
-    }
-  }
-</script>
-
- <link rel="stylesheet" href="style.css">
-<video autoplay muted loop id="bg-video">
- <source src="Word Video No Sound.mp4" type="video/mp4">
-</video>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&display=swap" rel="stylesheet">
- <link rel="icon" type="image/x-icon" href="MugShot-PFP.png">
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>DavidVR - About Me</title>
+  <link rel="icon" type="image/x-icon" href="MugShot-PFP.png">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&display=swap" rel="stylesheet">
+  
   <style>
-    body {
-      background: #0c92ff;
+    * {
+      box-sizing: border-box;
       margin: 0;
-      padding: 40px 20px;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Comfortaa', cursive, 'Segoe UI', sans-serif;
+      min-height: 100vh;
       display: flex;
       justify-content: center;
+      align-items: center;
+      padding: 20px;
+      color: #fff;
+      overflow-x: hidden;
     }
 
+    /* --- BACKGROUND VIDEO --- */
+    #bg-video {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: -1;
+      filter: brightness(0.6);
+    }
+
+    /* --- PROFILE CARD STYLES --- */
     .card {
-      background: white;
-      padding: 30px;
-      border-radius: 12px;
-      max-width: 500px;
+      background: rgba(20, 20, 20, 0.75);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      padding: 35px;
+      border-radius: 20px;
+      max-width: 480px;
       width: 100%;
       text-align: center;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
     }
 
     .profile-pic {
-      width: 150px;
-      height: 150px;
+      width: 140px;
+      height: 140px;
       border-radius: 50%;
       object-fit: cover;
-      border: 4px solid #ddd;
+      border: 3px solid rgba(255, 255, 255, 0.2);
       margin-bottom: 20px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
     }
 
     h1 {
-      margin: 10px 0;
+      font-size: 28px;
+      margin-bottom: 12px;
+      font-weight: 700;
     }
 
     p {
-      font-size: 16px;
-      margin: 8px 0;
+      font-size: 15px;
+      margin: 10px 0;
+      color: #ddd;
+      line-height: 1.5;
+    }
+
+    p strong {
+      color: #fff;
+    }
+
+    .contact-email {
+      color: #0c92ff;
+      text-decoration: none;
+    }
+
+    .contact-email:hover {
+      text-decoration: underline;
+    }
+
+    /* Button Group */
+    .button-group {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 25px;
     }
 
     .btn {
-      display: inline-block;
-      margin-top: 20px;
-      padding: 12px 24px;
-      background-color: #ff0050;
-      color: white;
+      display: block;
+      padding: 12px 20px;
+      color: #fff;
       text-decoration: none;
       font-weight: bold;
-      border-radius: 8px;
-      transition: background-color 0.3s ease;
+      font-size: 14px;
+      border-radius: 12px;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     }
 
     .btn:hover {
-      background-color: #cc0040;
+      transform: translateY(-2px);
+      filter: brightness(1.1);
+    }
+
+    .btn-home {
+      background-color: #0c92ff;
+    }
+
+    .btn-tiktok {
+      background-color: #ff0050;
+    }
+
+    .btn-youtube {
+      background-color: #ff0000;
+    }
+
+    /* --- WARNING OVERLAY STYLES --- */
+    .music-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      background-color: #0b0b0b;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999; 
+      transition: opacity 0.5s ease;
+      padding: 20px;
+      box-sizing: border-box;
+      text-align: center;
+    }
+
+    .warning-text {
+      font-size: 22px;
+      font-weight: bold;
+      color: #ff3333;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .sub-text {
+      font-size: 15px;
+      color: #bbb;
+      margin-bottom: 25px;
+    }
+
+    .enter-btn {
+      padding: 15px 40px;
+      font-size: 16px;
+      cursor: pointer;
+      background-color: #fff;
+      color: #000;
+      border: none;
+      border-radius: 25px;
+      font-weight: bold;
+      box-shadow: 0px 4px 15px rgba(255, 255, 255, 0.1);
+      transition: transform 0.2s, background-color 0.2s;
+    }
+
+    .enter-btn:hover {
+      transform: scale(1.03);
+      background-color: #e6e6e6;
+    }
+
+    /* --- MINI AUDIO PLAYER --- */
+    .custom-player {
+      position: fixed;
+      bottom: 20px; 
+      right: 20px;
+      background-color: rgba(24, 24, 24, 0.9);
+      backdrop-filter: blur(8px);
+      border: 1px solid #282828;
+      border-radius: 12px;
+      padding: 12px 18px;
+      width: 260px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.5);
+      z-index: 9998; 
+    }
+
+    .player-info {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .track-title {
+      font-size: 14px;
+      font-weight: 600;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .track-status {
+      font-size: 11px;
+      color: #b3b3b3;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .player-controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 4px;
+    }
+
+    .action-btn {
+      background: #fff;
+      color: #000;
+      border: none;
+      padding: 8px 16px;
+      font-size: 13px;
+      font-weight: bold;
+      border-radius: 20px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: background 0.2s;
+    }
+
+    .action-btn:hover {
+      background: #e6e6e6;
+    }
+
+    .mute-icon-btn {
+      background: transparent;
+      border: none;
+      color: #b3b3b3;
+      font-size: 18px;
+      cursor: pointer;
+      padding: 4px;
+      transition: color 0.2s;
+    }
+
+    .mute-icon-btn:hover {
+      color: #fff;
     }
   </style>
 </head>
 <body>
+
+  <!-- Background Video -->
+  <video autoplay muted loop id="bg-video" playsinline>
+    <source src="Word Video No Sound.mp4" type="video/mp4">
+  </video>
+
+  <!-- Hidden Audio Element -->
+  <audio id="bg-music" src="I deserve this.mp3" loop></audio>
+
+  <!-- Audio Warning Overlay -->
+  <div id="overlay" class="music-overlay">
+    <div class="warning-text">⚠️ Audio Warning</div>
+    <div class="sub-text">This website plays explicit music.</div>
+    <button class="enter-btn" onclick="startWebsite()">Unmute & Enter</button>
+  </div>
+
+  <!-- Main Profile Card -->
   <div class="card">
     <img src="MugShot-PFP.png" alt="DavidVR" class="profile-pic">
     <h1>DavidVR</h1>
-    <p><strong>About Me:</strong> I'm DavidVR and I post tiktok any time!</p>
-    <p><strong>Contact:</strong> davidtibulasi@gmail.com</p>
-   <div class="button-group">
-  <a href="https://www.davidvrsite.com" target="_blank" class="btn home page (made with google site)">Home Page (Made With Google Site)</a>
-  <a href="https://www.tiktok.com/@davidvr.plz.unban" target="_blank" class="btn tiktok">TikTok</a>
-  <a href="https://www.youtube.com/@davidvr.2368" target="_blank" class="btn youtube">YouTube</a>
-</div>
+    <p><strong>About Me:</strong> I'm DavidVR and I post TikToks any time!</p>
+    <p><strong>Contact:</strong> <a href="mailto:davidvr@davidvrsite.com" class="contact-email">davidvr@davidvrsite.com</a></p>
+    
+    <div class="button-group">
+      <a href="https://www.davidvrsite.com" target="_blank" class="btn btn-home">Home Page (Google Site)</a>
+      <a href="https://www.tiktok.com/@davidvr_main" target="_blank" class="btn btn-tiktok">TikTok</a>
+      <a href="https://www.youtube.com/@DavidVR-Main" target="_blank" class="btn btn-youtube">YouTube</a>
+    </div>
+  </div>
+
+  <!-- Audio Player Controls -->
+  <div class="custom-player">
+    <div class="player-info">
+      <div id="status-text" class="track-status">Paused</div>
+      <div class="track-title">I deserve this</div>
+    </div>
+    
+    <div class="player-controls">
+      <button id="master-play-btn" class="action-btn" onclick="togglePlay()">
+        <span id="play-icon">▶</span> <span id="play-text">Play</span>
+      </button>
+      <button id="master-mute-btn" class="mute-icon-btn" onclick="toggleMute()" title="Mute/Unmute">
+        🔊
+      </button>
+    </div>
+  </div>
+
+  <script>
+    const audio = document.getElementById("bg-music");
+
+    function startWebsite() {
+      const overlay = document.getElementById("overlay");
+      const statusText = document.getElementById("status-text");
+      const playIcon = document.getElementById("play-icon");
+      const playText = document.getElementById("play-text");
+      
+      audio.play().then(() => {
+        statusText.innerHTML = "Playing";
+        statusText.style.color = "#1db954"; 
+        playIcon.innerHTML = "⏸";
+        playText.innerHTML = "Pause";
+      }).catch(err => {
+        console.log("Audio playback error:", err);
+      });
+      
+      overlay.style.opacity = "0";
+      setTimeout(() => {
+        overlay.style.display = "none";
+      }, 500); 
+    }
+
+    function togglePlay() {
+      const playIcon = document.getElementById("play-icon");
+      const playText = document.getElementById("play-text");
+      const statusText = document.getElementById("status-text");
+
+      if (audio.paused) {
+        audio.play();
+        playIcon.innerHTML = "⏸";
+        playText.innerHTML = "Pause";
+        statusText.innerHTML = "Playing";
+        statusText.style.color = "#1db954";
+      } else {
+        audio.pause();
+        playIcon.innerHTML = "▶";
+        playText.innerHTML = "Play";
+        statusText.innerHTML = "Paused";
+        statusText.style.color = "#b3b3b3";
+      }
+    }
+
+    function toggleMute() {
+      const muteBtn = document.getElementById("master-mute-btn");
+
+      if (audio.muted) {
+        audio.muted = false;
+        muteBtn.innerHTML = "🔊";
+      } else {
+        audio.muted = true;
+        muteBtn.innerHTML = "🔇";
+      }
+    }
+  </script>
+
 </body>
-</nav>
 </html>
